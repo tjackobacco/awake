@@ -8,9 +8,11 @@ mouse_c = mouse_controller
 keyboard_c = keyboard_controller
 
 delay = 60.0
-time_of_inactivity = 60  # If 5 minutes have passed, move mouse
+time_of_inactivity = 120  # If X seconds have passed, move mouse
 starttime = time.time()
 last = starttime  # last time user did anything
+
+pyautogui.FAILSAFE = False # disable builtin "failsafe" which is not a failsafe but a "crash the program" feature
 
 
 def on_anything(*args):
@@ -23,14 +25,17 @@ def spazz_out(n):
     width, height = pyautogui.size()
     cursor_x, cursor_y = pyautogui.position()
     # center if out of bounds
-    if (cursor_x >= width or cursor_x <= 0):
+    if (cursor_x >= width or cursor_x <= 110):
+        pyautogui.moveTo(round(width/2), round(height/2))
+    if (cursor_y >= height or cursor_y <= 110):
         pyautogui.moveTo(round(width/2), round(height/2))
 
-    # wiggle
-    pyautogui.move(100, 0)
-    pyautogui.move(0, 100)
+    # square wiggle
+    pyautogui.move(10, 0)
+    pyautogui.move(0, 10)
+    pyautogui.move(-10, 0)
+    pyautogui.move(0, -10)
 
-    # print(cursor_x, cursor_y, width, height)
     sticky_message(f'unslept {n} time[s]')
 
 
@@ -63,7 +68,6 @@ def run():
             counter += 1
             spazz_out(counter)
             time.sleep(10)
-            # time.sleep(delay - ((time.time() - starttime) % delay))
 
 
 if __name__ == "__main__":
