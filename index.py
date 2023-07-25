@@ -4,16 +4,14 @@ from pynput.keyboard import Controller as keyboard_controller, Listener as keybo
 import time
 import sys
 
-mouse_c = mouse_controller
-keyboard_c = keyboard_controller
-
-delay = 60.0
-time_of_inactivity = 120  # If X seconds have passed, move mouse
-starttime = time.time()
-last = starttime  # last time user did anything
-
+TIME_OF_INACTIVITY = 120  # If X seconds have passed, move mouse
+DELAY = 30.0        # Move mouse every X seconds
 pyautogui.FAILSAFE = False # disable builtin "failsafe" which is not a failsafe but a "crash the program" feature
 
+mouse_c = mouse_controller
+keyboard_c = keyboard_controller
+starttime = time.time()
+last = starttime  # last time user did anything
 
 def on_anything(*args):
     global last
@@ -64,10 +62,10 @@ def run():
 
     while True:
         diff = time.time() - last
-        if (diff > time_of_inactivity):
+        if (diff > TIME_OF_INACTIVITY):
             counter += 1
             spazz_out(counter)
-            time.sleep(10)
+            time.sleep(DELAY)
 
 
 if __name__ == "__main__":
